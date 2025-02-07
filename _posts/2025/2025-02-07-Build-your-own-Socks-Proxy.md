@@ -166,7 +166,7 @@ the first thing we start our proxy server in the port 9090:
 ![](assets/img/Pasted image 20250207200124.png)
 
 the server in listen mode we need to configure now the proxychains in proxchains configuration file and put the port we want in our case i used 1080
-![](Pasted image 20250207200440.png)
+![](/assets/img/Pasted image 20250207200440.png)
  and i should set the same port in proxychains configuration file
 ![](/assets/img/Pasted image 20250207200602.png)
 
