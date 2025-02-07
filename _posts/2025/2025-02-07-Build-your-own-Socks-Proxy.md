@@ -4,7 +4,7 @@ date: 2025-02-7 00:00:00 +0800
 categories: [Red Teaming, Tools, APT Simulation Tooling]
 tags: [tunneling, reverse socks proxy, pivoting, network, proxy]
 image: /assets/img/tunneling proxy.png
-alt: "Reverse Proxy"
+alt: "Reverse Proxy Pic"
 ---
 
 During offensive engagements, tunneling traffic through a proxy is critical for pivoting within internal networks. The challenge arises when relying on open-source proxies like Chisel, Ligolo, reGeorg, or reSocks, etc tools often flagged by security solutions. Even with obfuscation the advanced EDRs (Endpoint Detection and Response) may still block these tools. 
