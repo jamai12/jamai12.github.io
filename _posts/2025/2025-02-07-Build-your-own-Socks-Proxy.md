@@ -165,7 +165,7 @@ the source code is provided in github, so in this scenario we have 3 machines:
 The first step is to start our proxy server on the attacker machine, listening on port 9090::
 ![](assets/img/Pasted image 20250207200124.png)
 
-the server in listen mode we need to configure now the proxychains in proxchains configuration file and put the port we want in our case i used 1080
+The server in listen mode we need to configure now the proxychains in proxchains configuration file and put the port we want in our case i used 1080
 ![](/assets/img/Pasted image 20250207200440.png)
  and i should set the same port in proxychains configuration file
 ![](/assets/img/Pasted image 20250207200602.png)
@@ -176,7 +176,7 @@ Next, we need to initiate a connection to the server with the attacker machine u
 So once the connection established with the server the sever than will bind in second  port we defined later to intercept proxychains connection to confirm that we can use the following command
 ![](/assets/img/Pasted image 20250207201113.png)
 
-so than any command we used with proxychains will be forward in the port `1080` for example let's use proxychains with `nxc` command to check smb of the target machine
+Than any command we used with proxychains will be forward in the port `1080` for example let's use proxychains with `nxc` command to check smb of the target machine
 ```sh
 proxychains nxc smb 192.168.1.2
 ```
@@ -189,4 +189,4 @@ and this is the output from the client
 and we can also use for example nmap let's say that we want to scan port 443,445 with scan option `-sCV` 
 ![](/assets/img/Pasted image 20250207201835.png)
 
-I hope you enjoy reading the blog :). Here's the GitHub source code [link](https://github.com/jamai12/Reverse-SOCKS-Proxy.git) for ProxyChains.
+I hope you enjoy reading the blog :) and here's the GitHub source code [link](https://github.com/jamai12/Reverse-SOCKS-Proxy.git).
