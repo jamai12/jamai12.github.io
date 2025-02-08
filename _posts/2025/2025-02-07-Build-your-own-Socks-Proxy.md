@@ -158,11 +158,11 @@ For every new request from ProxyChains on a different port, the server establish
 
 ## Proof of Concept (Poc)
 the source code is provided in github, so in this scenario we have 3 machines:
-	linux machine
-	 linux machine
-	 windows machine
+- linux machine (Attacker) - inth0: 192.168.213.138
+- linux machine (Compromised) - inth0: 192.168.213.133, inth1: 192.168.1.10
+- windows Server machine (Target) - inth0: 192.168.1.2
 
-the first thing we start our proxy server in the port 9090:
+The first step is to start our proxy server on the attacker machine, listening on port 9090::
 ![](assets/img/Pasted image 20250207200124.png)
 
 the server in listen mode we need to configure now the proxychains in proxchains configuration file and put the port we want in our case i used 1080
@@ -170,10 +170,10 @@ the server in listen mode we need to configure now the proxychains in proxchains
  and i should set the same port in proxychains configuration file
 ![](/assets/img/Pasted image 20250207200602.png)
 
-and than we need to initiate the  connection with the server using client in the second machine that have access to the target machine
+Next, we need to initiate a connection to the server with the attacker machine using a client on the compromised machine that has access to the target machine
 ![](/assets/img/Pasted image 20250207200836.png)
 
-so once the connection established with the server the sever than will bind in second  port we defined later to intercept proxychains connection to confirm that we can use the following command
+So once the connection established with the server the sever than will bind in second  port we defined later to intercept proxychains connection to confirm that we can use the following command
 ![](/assets/img/Pasted image 20250207201113.png)
 
 so than any command we used with proxychains will be forward in the port `1080` for example let's use proxychains with `nxc` command to check smb of the target machine
@@ -189,4 +189,4 @@ and this is the output from the client
 and we can also use for example nmap let's say that we want to scan port 443,445 with scan option `-sCV` 
 ![](/assets/img/Pasted image 20250207201835.png)
 
-I hope you enjoy reading the blog 😉. Here's the GitHub source code [link](https://github.com/jamai12/Reverse-SOCKS-Proxy.git) for ProxyChains.
+I hope you enjoy reading the blog :). Here's the GitHub source code [link](https://github.com/jamai12/Reverse-SOCKS-Proxy.git) for ProxyChains.
