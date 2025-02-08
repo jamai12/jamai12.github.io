@@ -31,7 +31,7 @@ The reverse SOCKS proxy (hosted on a reachable system) accepts connections from 
 - The proxy to handle all traffic routing, masking internal infrastructure.
 
 > The question here why i used SOCKS?
-> While protocols like HTTP/HTTPS can be used for tunneling, SOCKS operates at **Layer 5 (Session Layer)** of the OSI model, making it protocol-agnostic. This means it can handle **any TCP/UDP traffic** (e.g., SSH, RDP, custom protocols) without needing application-layer modifications.
+> While protocols like HTTP/HTTPS can be used for tunneling, SOCKS operates at **Layer 5 (Session Layer)** of the OSI model, making it protocol-agnostic. This means it can handle **any TCP/UDP traffic** (e.g., SSH, RDP, custom protocols) without needing application-layer modifications and easy to begin with.
 
 ### **Comparing Proxy Protocols**
 
@@ -47,13 +47,13 @@ The reverse SOCKS proxy (hosted on a reachable system) accepts connections from 
 **Proxychains** is a powerful open-source tool that forces **any TCP/UDP connection** made by an application to pass through a chain of proxies (e.g., SOCKS, HTTP). It’s widely used for anonymity, bypassing firewalls or penetration testing so let’s break down how it works and explore its **chain types**:
 ### **How Proxychains Works**
 **Interception via LD_PRELOAD**:  
-	- Proxychains uses the `LD_PRELOAD` Linux environment variable to **inject itself into the target application** at runtime. This allows it to intercept and reroute network calls (e.g., `connect()`, `sendto()`) through the configured proxy chain.
-    - Works with **dynamically linked applications** (not static binaries).
-    - No need to modify the application’s code.
+- Proxychains uses the `LD_PRELOAD` Linux environment variable to **inject itself into the target application** at runtime. This allows it to intercept and reroute network calls (e.g., `connect()`, `sendto()`) through the configured proxy chain.
+- Works with **dynamically linked applications** (not static binaries).
+- No need to modify the application’s code.
  
  **Proxy Chain Configuration**:
-    - Proxies are defined in `/etc/proxychains.conf` (or a custom config file).
-    - Each proxy in the chain is listed with its type, IP, port, and credentials:
+- Proxies are defined in `/etc/proxychains.conf` (or a custom config file).
+- Each proxy in the chain is listed with its type, IP, port, and credentials:
 ```sh
 socks5 192.168.1.10 1080 user1 pass123
 http 10.0.0.2 8080
@@ -61,11 +61,11 @@ socks4 45.76.12.34 4145
 ```
 
 **Traffic Routing**:
-    - When you run `proxychains <command>` (e.g., `proxychains nmap 192.168.5.10`), the tool:
-        1. Reads the proxy chain from the config.
-        2. Routes the application’s traffic through each proxy sequentially.
-        3. Each proxy in the chain only knows about the **next hop**, enhancing anonymity.
-    - Example flow:  
+- When you run `proxychains <command>` (e.g., `proxychains nmap 192.168.5.10`), the tool:
+  1. Reads the proxy chain from the config.
+  2. Routes the application’s traffic through each proxy sequentially.
+  3. Each proxy in the chain only knows about the **next hop**, enhancing anonymity.
+- Example flow:  
         `Your PC → Proxy1 → Proxy2 → Proxy3 → Target Server`
 
 ### **Proxy Chain Types**
@@ -138,7 +138,7 @@ SOCKS (Socket Secure) is a proxy protocol that routes network packets between a 
 | **Advantages of SOCKS5 over SOCKS4** | - Works with **UDP-based applications** (gaming, VoIP, live streaming).<br>- **Faster performance** due to optimized handling of data packets.<br>- **Better security** with authentication and support for encryption layers.<br>- **More flexibility** due to IPv6 and built-in DNS resolution.                                                                                        |
 
 ## How reverse Socks proxy work
-Now that I understand these concepts, I’ll explain how to create your own SOCKS proxy to truly grasp tunneling through proxies. I often encountered situations where i needed a proxy for pivoting but the biggest challenge was that most proxies were easily detected even after obfuscating and modifying their signatures, they remained difficult to evade advanced EDR solutions and enterprise security measures.
+Now after understanding these concepts, I’ll explain how to create your own SOCKS proxy to truly grasp tunneling through proxies. I often encountered situations where i needed a proxy for pivoting but the biggest challenge was that most proxies were easily detected even after obfuscating and modifying their signatures, they remained difficult to evade advanced EDR solutions and enterprise security measures.
 
 So, i thought why not create my own proxy and fully understand how it works? for that i  started by researching and then jumped straight into developing a simple reverse proxy using Python, i initially used Python because it’s easy to prototype and test ideas and once i had a working version, i applied the same logic and structure to develop a more advanced version in C#, using HTTPS protocol.
 
@@ -146,7 +146,7 @@ The result was a proxy that successfully bypassed multiple security solutions, i
 
 Let’s dive in, i w'll start by explaining how a proxy server works.
 
-A proxy server is responsible for handling connections from a client, establishing a persistent socket tunnel and maintaining the connection similar to a reverse shell. The client initiates a connection with the server on a specified port, while the server simultaneously listens for connections from ProxyChains. We can define where ProxyChains should initiate connections in its configuration file located in the `/etc` directory.
+A proxy server is responsible for handling connections from a client, establishing a persistent socket tunnel and maintaining the connection similar to a reverse shell. The client initiates a connection with the server on a specified port, while the server simultaneously listens for connections from ProxyChains. We can define where ProxyChains should initiate connections in its configuration file located in the `/etc/proxychains.conf`.
 
 Once the server receives a connection from ProxyChains, it forwards it to the previously established tunnel with the client so the client then determines the connection type based on ProxyChains’ request and extracts the target IP address and port from the incoming packet. After extraction, the client creates a socket and initiates a direct connection with the target machine on the specified port, effectively establishing another tunnel within the internal network.
 
